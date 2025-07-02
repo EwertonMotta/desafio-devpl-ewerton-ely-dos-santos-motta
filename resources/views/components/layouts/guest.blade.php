@@ -30,15 +30,11 @@
             </div>
         </header>
 
-        <main class="flex flex-grow items-center justify-center px-4 py-6">
+        <main class="flex flex-grow items-center justify-center">
             {{ $slot }}
         </main>
 
-        <footer class="mt-6 bg-white shadow">
-            <div class="mx-auto max-w-7xl px-4 py-4 text-center text-gray-600">
-                &copy; {{ date('Y') }} {{ config('app.name') }}. Todos os direitos reservados.
-            </div>
-        </footer>
+        <x-layouts.partials.footer />
     </div>
 
 </body>
