@@ -17,11 +17,17 @@
                     <div class="hidden items-center space-x-4 md:flex">
                         @if (Route::has('login'))
                             @auth
-                                <x-outline.primary-button href="{{ url('/dashboard') }}" label="Dashboard" />
+                                <x-outline.primary-button href="{{ url('/dashboard') }}">
+                                    Dashboard
+                                </x-outline.primary-button>
                             @else
-                                <x-outline.primary-button href="{{ route('login') }}" label="Login" />
+                                <x-outline.primary-button href="{{ route('login') }}">
+                                    Login
+                                </x-outline.primary-button>
                                 @if (Route::has('register'))
-                                    <x-outline.primary-button href="{{ route('register') }}" label="Register" />
+                                    <x-outline.primary-button href="{{ route('register') }}">
+                                        Register
+                                    </x-outline.primary-button>
                                 @endif
                             @endauth
                         @endif
