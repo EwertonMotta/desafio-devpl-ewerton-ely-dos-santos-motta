@@ -90,7 +90,7 @@ class ToDoController extends Controller
         return redirect()->route('to-do.index');
     }
 
-    public function show(Task $task): View
+    public function show(Task $task): View|RedirectResponse
     {
         if (auth()->user()->cannot('view', $task)) {
             return redirect()->route('to-do.index')
@@ -100,7 +100,7 @@ class ToDoController extends Controller
         return view('to-do.show', ['task' => $task]);
     }
 
-    public function edit(Task $task): View
+    public function edit(Task $task): View|RedirectResponse
     {
         if (auth()->user()->cannot('update', $task)) {
             return redirect()->route('to-do.index')
