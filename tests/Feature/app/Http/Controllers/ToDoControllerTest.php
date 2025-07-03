@@ -38,7 +38,7 @@ test('index method filters tasks by title', function (): void {
     $response = $this->actingAs($user)->get(route('to-do.index', ['title' => 'Special']));
 
     $response->assertStatus(200);
-    $response->assertViewHas('tasks', fn($tasks): bool => $tasks->contains($task1) && $tasks->count() === 1);
+    $response->assertViewHas('tasks', fn ($tasks): bool => $tasks->contains($task1) && $tasks->count() === 1);
 });
 
 test('index method filters tasks by date range', function (): void {
@@ -62,7 +62,7 @@ test('index method filters tasks by date range', function (): void {
         ]));
 
     $response->assertStatus(200);
-    $response->assertViewHas('tasks', fn($tasks): bool => $tasks->contains($task2) && $tasks->count() === 1);
+    $response->assertViewHas('tasks', fn ($tasks): bool => $tasks->contains($task2) && $tasks->count() === 1);
 });
 
 test('index method filters tasks by deadline', function (): void {
@@ -86,7 +86,7 @@ test('index method filters tasks by deadline', function (): void {
         ]));
 
     $response->assertStatus(200);
-    $response->assertViewHas('tasks', fn($tasks): bool => $tasks->contains($task1) && $tasks->count() === 1);
+    $response->assertViewHas('tasks', fn ($tasks): bool => $tasks->contains($task1) && $tasks->count() === 1);
 });
 
 test('toggle method marks task as completed', function (): void {

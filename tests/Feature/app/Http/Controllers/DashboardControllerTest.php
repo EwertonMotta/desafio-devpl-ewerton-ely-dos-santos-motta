@@ -36,11 +36,11 @@ test('dashboard limits displayed tasks to 5', function (): void {
     $response = $this->actingAs($user)->get(route('dashboard'));
 
     $response->assertStatus(200);
-    $response->assertViewHas('tasks', fn($viewTasks): bool => $viewTasks->count() === 5);
+    $response->assertViewHas('tasks', fn ($viewTasks): bool => $viewTasks->count() === 5);
 });
 
 test('dashboard shows tasks created in current month', function (): void {
-    $user = User::factory()->create();
+    $user           = User::factory()->create();
     $tasksThisMonth = Task::factory()->count(3)->create([
         'user_id'    => $user->id,
         'created_at' => now(),
@@ -59,7 +59,7 @@ test('dashboard shows tasks created in current month', function (): void {
 });
 
 test('dashboard shows tasks completed in current month', function (): void {
-    $user = User::factory()->create();
+    $user                    = User::factory()->create();
     $tasksCompletedThisMonth = Task::factory()->count(3)->create([
         'user_id'      => $user->id,
         'completed'    => true,
@@ -135,7 +135,7 @@ test('dashboard only shows tasks for authenticated user', function (): void {
     $response = $this->actingAs($user1)->get(route('dashboard'));
 
     $response->assertStatus(200);
-    $response->assertViewHas('tasks', fn($tasks) => $tasks->every(fn ($task): bool => $task->user_id === $user1->id));
+    $response->assertViewHas('tasks', fn ($tasks) => $tasks->every(fn ($task): bool => $task->user_id === $user1->id));
 });
 
 test('dashboard handles date ranges correctly', function (): void {
