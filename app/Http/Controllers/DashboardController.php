@@ -60,16 +60,6 @@ class DashboardController extends Controller
             ->where('completed', false)
             ->count();
 
-        return view('dashboard', compact(
-            'tasks',
-            'createdCurrentMonth',
-            'createdLastMonth',
-            'completedCurrentMonth',
-            'completedLastMonth',
-            'createdCompletedCurrentMonth',
-            'createdCompletedLastMonth',
-            'createdPendingCurrentMonth',
-            'createdPendingLastMonth'
-        ));
+        return view('dashboard', ['tasks' => $tasks, 'createdCurrentMonth' => $createdCurrentMonth, 'createdLastMonth' => $createdLastMonth, 'completedCurrentMonth' => $completedCurrentMonth, 'completedLastMonth' => $completedLastMonth, 'createdCompletedCurrentMonth' => $createdCompletedCurrentMonth, 'createdCompletedLastMonth' => $createdCompletedLastMonth, 'createdPendingCurrentMonth' => $createdPendingCurrentMonth, 'createdPendingLastMonth' => $createdPendingLastMonth]);
     }
 }

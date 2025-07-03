@@ -25,24 +25,14 @@ class ToDoController extends Controller
 
         $tasks = Task::query()
             ->where('user_id', auth()->id())
-            ->when($title, function ($query) use ($title) {
-                return $query->where('title', 'like', '%' . $title . '%');
-            })
-            ->when($startCreatedAt, function ($query) use ($startCreatedAt) {
-                return $query->where('created_at', '>=', $startCreatedAt);
-            })
-            ->when($endCreatedAt, function ($query) use ($endCreatedAt) {
-                return $query->where('created_at', '<=', $endCreatedAt);
-            })
-            ->when($startDeadline, function ($query) use ($startDeadline) {
-                return $query->where('deadline', '>=', $startDeadline . ' 00:00:00');
-            })
-            ->when($endDeadline, function ($query) use ($endDeadline) {
-                return $query->where('deadline', '<=', $endDeadline . ' 23:59:59');
-            })->orderBy($orderBy, $orderDirection)
+            ->when($title, fn ($query) => $query->where('title', 'like', '%' . $title . '%'))
+            ->when($startCreatedAt, fn ($query) => $query->where('created_at', '>=', $startCreatedAt))
+            ->when($endCreatedAt, fn ($query) => $query->where('created_at', '<=', $endCreatedAt))
+            ->when($startDeadline, fn ($query) => $query->where('deadline', '>=', $startDeadline . ' 00:00:00'))
+            ->when($endDeadline, fn ($query) => $query->where('deadline', '<=', $endDeadline . ' 23:59:59'))->orderBy($orderBy, $orderDirection)
             ->paginate(10);
 
-        return view('to-do.index', compact('tasks', 'pendingTasksCount', 'tasksCount'));
+        return view('to-do.index', ['tasks' => $tasks, 'pendingTasksCount' => $pendingTasksCount, 'tasksCount' => $tasksCount]);
     }
 
     public function toggle(Request $request, Task $task)
@@ -66,9 +56,9 @@ class ToDoController extends Controller
         $queryParams  = [];
 
         if ($requestQuery) {
-            $queryParams = explode('&', $requestQuery);
-            $queryParams = array_reduce($queryParams, function ($carry, $item) {
-                list($key, $value)      = explode('=', $item);
+            $queryParams = explode('&', (string) $requestQuery);
+            $queryParams = array_reduce($queryParams, function (array $carry, $item) {
+                [$key, $value]          = explode('=', $item);
                 $carry[urldecode($key)] = urldecode($value);
 
                 return $carry;
@@ -104,7 +94,7 @@ class ToDoController extends Controller
                 ->withErrors(['error' => 'Você não tem permissão para visualizar esta tarefa.']);
         }
 
-        return view('to-do.show', compact('task'));
+        return view('to-do.show', ['task' => $task]);
     }
 
     public function edit(Task $task)
@@ -114,7 +104,7 @@ class ToDoController extends Controller
                 ->withErrors(['error' => 'Você não tem permissão para editar esta tarefa.']);
         }
 
-        return view('to-do.edit', compact('task'));
+        return view('to-do.edit', ['task' => $task]);
     }
 
     public function update(TaskRequest $request, Task $task)

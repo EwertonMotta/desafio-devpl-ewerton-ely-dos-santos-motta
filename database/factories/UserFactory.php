@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Hash;
  */
 class UserFactory extends Factory
 {
-    protected static ?string $password;
+    protected static ?string $password = null;
 
     public function definition(): array
     {
