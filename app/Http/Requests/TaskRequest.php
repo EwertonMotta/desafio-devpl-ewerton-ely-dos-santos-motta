@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
@@ -22,10 +24,10 @@ class TaskRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => 'required|string|max:255',
+            'title'       => 'required|string|max:255',
             'description' => 'nullable|string|max:1000',
-            'completed' => 'boolean',
-            'deadline' => 'nullable|date|after_or_equal:today',
+            'completed'   => 'boolean',
+            'deadline'    => 'nullable|date|after_or_equal:today',
         ];
     }
 
@@ -37,13 +39,13 @@ class TaskRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'title.required' => 'O título é obrigatório.',
-            'title.string' => 'O título deve ser uma string.',
-            'title.max' => 'O título não pode ter mais de 255 caracteres.',
-            'description.string' => 'A descrição deve ser uma string.',
-            'description.max' => 'A descrição não pode ter mais de 1000 caracteres.',
-            'completed.boolean' => 'O status de conclusão deve ser verdadeiro ou falso.',
-            'deadline.date' => 'O prazo deve ser uma data válida.',
+            'title.required'          => 'O título é obrigatório.',
+            'title.string'            => 'O título deve ser uma string.',
+            'title.max'               => 'O título não pode ter mais de 255 caracteres.',
+            'description.string'      => 'A descrição deve ser uma string.',
+            'description.max'         => 'A descrição não pode ter mais de 1000 caracteres.',
+            'completed.boolean'       => 'O status de conclusão deve ser verdadeiro ou falso.',
+            'deadline.date'           => 'O prazo deve ser uma data válida.',
             'deadline.after_or_equal' => 'O prazo deve ser hoje ou uma data futura.',
         ];
     }

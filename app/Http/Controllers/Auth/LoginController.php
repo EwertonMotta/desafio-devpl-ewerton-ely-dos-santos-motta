@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace App\Http\Controllers\Auth;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
@@ -15,16 +17,18 @@ class LoginController extends Controller
 
     public function login(Request $request)
     {
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required|string|min:8',
-        ],
-        [
-            'email.required' => 'O campo de e-mail é obrigatório.',
-            'email.email' => 'O e-mail deve ser um endereço de e-mail válido.',
-            'password.required' => 'O campo de senha é obrigatório.',
-            'password.min' => 'A senha deve ter pelo menos 8 caracteres.',
-        ]);
+        $request->validate(
+            [
+                'email'    => 'required|email',
+                'password' => 'required|string|min:8',
+            ],
+            [
+                'email.required'    => 'O campo de e-mail é obrigatório.',
+                'email.email'       => 'O e-mail deve ser um endereço de e-mail válido.',
+                'password.required' => 'O campo de senha é obrigatório.',
+                'password.min'      => 'A senha deve ter pelo menos 8 caracteres.',
+            ]
+        );
 
         $credentials = $request->only('email', 'password');
 
@@ -40,6 +44,7 @@ class LoginController extends Controller
     public function logout(Request $request)
     {
         auth()->logout();
+
         return redirect('/');
     }
 }

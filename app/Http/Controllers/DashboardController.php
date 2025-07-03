@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -9,15 +11,15 @@ class DashboardController extends Controller
     public function __invoke(Request $request)
     {
         $tasks = auth()->user()->tasks()
-        ->where('completed', false)
-        ->orderBy('created_at', 'asc')
-        ->limit(5)
-        ->get();
+            ->where('completed', false)
+            ->orderBy('created_at', 'asc')
+            ->limit(5)
+            ->get();
 
         $createdCurrentMonth = auth()->user()->tasks()
-        ->whereMonth('created_at', now()->month)
-        ->whereYear('created_at', now()->year)
-        ->count();
+            ->whereMonth('created_at', now()->month)
+            ->whereYear('created_at', now()->year)
+            ->count();
 
         $createdLastMonth = auth()->user()->tasks()
             ->whereMonth('created_at', now()->subMonth())

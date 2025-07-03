@@ -1,44 +1,46 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace App\Http\Controllers;
 
+use App\Http\Requests\TaskRequest;
 use App\Models\Task;
 use Illuminate\Http\Request;
-use App\Http\Requests\TaskRequest;
 
 class ToDoController extends Controller
 {
     public function index(Request $request)
     {
-        $myTasks = auth()->user()->tasks()->get();
-        $tasksCount = $myTasks->count();
+        $myTasks           = auth()->user()->tasks()->get();
+        $tasksCount        = $myTasks->count();
         $pendingTasksCount = $myTasks->where('completed', false)->count();
 
         [$orderBy, $orderDirection] = explode('-', $request->query('orderBy', 'created_at-asc'));
-        $title = $request->query('title');
-        $startCreatedAt = $request->query('start_created_at');
-        $endCreatedAt = $request->query('end_created_at');
-        $startDeadline = $request->query('start_deadline');
-        $endDeadline = $request->query('end_deadline');
+        $title                      = $request->query('title');
+        $startCreatedAt             = $request->query('start_created_at');
+        $endCreatedAt               = $request->query('end_created_at');
+        $startDeadline              = $request->query('start_deadline');
+        $endDeadline                = $request->query('end_deadline');
 
         $tasks = Task::query()
-        ->where('user_id', auth()->id())
-        ->when($title, function ($query) use ($title) {
-            return $query->where('title', 'like', '%' . $title . '%');
-        })
-        ->when($startCreatedAt, function ($query) use ($startCreatedAt) {
-            return $query->where('created_at', '>=', $startCreatedAt);
-        })
-        ->when($endCreatedAt, function ($query) use ($endCreatedAt) {
-            return $query->where('created_at', '<=', $endCreatedAt);
-        })
-        ->when($startDeadline, function ($query) use ($startDeadline) {
-            return $query->where('deadline', '>=', $startDeadline . ' 00:00:00');
-        })
-        ->when($endDeadline, function ($query) use ($endDeadline) {
-            return $query->where('deadline', '<=', $endDeadline . ' 23:59:59');
-        })->orderBy($orderBy, $orderDirection)
-        ->paginate(10);
+            ->where('user_id', auth()->id())
+            ->when($title, function ($query) use ($title) {
+                return $query->where('title', 'like', '%' . $title . '%');
+            })
+            ->when($startCreatedAt, function ($query) use ($startCreatedAt) {
+                return $query->where('created_at', '>=', $startCreatedAt);
+            })
+            ->when($endCreatedAt, function ($query) use ($endCreatedAt) {
+                return $query->where('created_at', '<=', $endCreatedAt);
+            })
+            ->when($startDeadline, function ($query) use ($startDeadline) {
+                return $query->where('deadline', '>=', $startDeadline . ' 00:00:00');
+            })
+            ->when($endDeadline, function ($query) use ($endDeadline) {
+                return $query->where('deadline', '<=', $endDeadline . ' 23:59:59');
+            })->orderBy($orderBy, $orderDirection)
+            ->paginate(10);
 
         return view('to-do.index', compact('tasks', 'pendingTasksCount', 'tasksCount'));
     }
@@ -56,17 +58,19 @@ class ToDoController extends Controller
         }
 
         $task->update([
-            'completed' => true,
+            'completed'    => true,
             'completed_at' => now(),
         ]);
 
         $requestQuery = $request->get('query', '');
-        $queryParams = [];
+        $queryParams  = [];
+
         if ($requestQuery) {
             $queryParams = explode('&', $requestQuery);
             $queryParams = array_reduce($queryParams, function ($carry, $item) {
-                list($key, $value) = explode('=', $item);
+                list($key, $value)      = explode('=', $item);
                 $carry[urldecode($key)] = urldecode($value);
+
                 return $carry;
             }, []);
         }
@@ -84,10 +88,10 @@ class ToDoController extends Controller
         $validated = $request->validated();
 
         auth()->user()->tasks()->create([
-            'title' => $validated['title'],
-            'deadline' => $validated['deadline'],
+            'title'       => $validated['title'],
+            'deadline'    => $validated['deadline'],
             'description' => $validated['description'],
-            'completed' => $validated['completed'] ?? false,
+            'completed'   => $validated['completed'] ?? false,
         ]);
 
         return redirect()->route('to-do.index');
@@ -128,10 +132,10 @@ class ToDoController extends Controller
         $validated = $request->validated();
 
         $task->update([
-            'title' => $validated['title'],
-            'deadline' => $validated['deadline'],
+            'title'       => $validated['title'],
+            'deadline'    => $validated['deadline'],
             'description' => $validated['description'],
-            'completed' => $validated['completed'] ?? false,
+            'completed'   => $validated['completed'] ?? false,
         ]);
 
         return redirect()->route('to-do.index');
@@ -150,6 +154,7 @@ class ToDoController extends Controller
         }
 
         $task->delete();
+
         return redirect()->route('to-do.index');
     }
 }
