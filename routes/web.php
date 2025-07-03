@@ -1,9 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ToDoController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
-use App\Http\Controllers\DashboardController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -18,4 +19,6 @@ Route::post('/register', [RegisterController::class, 'register'])->name('registe
 
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/dashboard', DashboardController::class)->name('dashboard');
+    Route::resource('to-do', ToDoController::class)->parameters(['to-do' => 'task']);
+    Route::put('to-do/{task}/toggle', [ToDoController::class, 'toggle'])->name('to-do.toggle');
 });
