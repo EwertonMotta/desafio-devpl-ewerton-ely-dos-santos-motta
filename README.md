@@ -1,61 +1,67 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+## Instruções de Instalação e Uso
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+### Usando Docker
 
-## About Laravel
+1. Certifique-se de ter o Docker instalado.
+2. Execute o build e o container:
+   ```sh
+   docker build -t desafio-db .
+   docker run -d --rm -p 80:8080 --name desafio-db desafio-db
+   ```
+3. O sistema estará disponível em http://localhost.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+### Ambiente Local
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+1. Instale as dependências PHP e Node.js:
+   ```sh
+   composer install
+   npm install
+   ```
+2. Copie o arquivo `.env.example` para `.env` e gere a chave:
+   ```sh
+   cp .env.example .env
+   php artisan key:generate
+   ```
+3. Execute as migrations:
+   ```sh
+   php artisan migrate
+   ```
+4. Inicie o servidor com um dos comandos abaixo:
+   ```sh
+   php artisan serve
+   php -S localhost:80 -t public/
+   ```
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Funcionalidades Implementadas
 
-## Learning Laravel
+- Cadastro, listagem, edição e exclusão de tarefas (To-Do).
+- Filtro de tarefas por título, data de criação e prazo de conclusão.
+- Marcação de tarefas como concluídas e controle de data de conclusão.
+- Autenticação de usuários.
+- Políticas de autorização para garantir que apenas o dono pode visualizar, editar ou excluir suas tarefas.
+- Testes automatizados (unitários e de feature) cobrindo modelos, políticas e controllers.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Cobertura de Testes e Tipos
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+O projeto se encontra com **100% de cobertura de testes** (unitários e de feature) e **100% de cobertura de tipos**.
+- Para verificar a cobertura de testes, execute:
+  ```sh
+  composer test:coverage
+  ```
+- Para verificar a cobertura de tipos, execute:
+  ```sh
+  composer type
+  ```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Decisões Técnicas e Considerações
 
-## Laravel Sponsors
+- Utilização do Laravel 12.x e PHP 8.4 para aproveitar recursos modernos da linguagem e framework.
+- Uso de Eloquent Scopes para facilitar filtros de tarefas pendentes e concluídas.
+- Implementação de políticas via atributo #[UsePolicy] para maior clareza e segurança.
+- Testes escritos com Pest para maior legibilidade e produtividade.
+- Dockerfile multi-stage para builds otimizados e ambiente de produção enxuto.
+- Banco de dados SQLite para facilitar testes e execução local, podendo ser facilmente trocado por outros drivers.
+- Cobertura de 100% de tipos e testes, validada via CI.
+- Uso de Alpine.js para interatividade leve e reativa no frontend, facilitando modais e interações sem dependências pesadas.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
-
-### Premium Partners
-
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+---
