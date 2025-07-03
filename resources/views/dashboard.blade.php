@@ -16,7 +16,7 @@
         </header>
         <div
             class="max-w-4/5 w-full rounded-lg border border-gray-200 bg-white p-2 shadow-sm dark:border-gray-700 dark:bg-gray-800">
-            <div class="grid grid-cols-1 gap-6 p-2 md:grid-cols-4">
+            <div class="grid grid-cols-1 gap-4 p-2 md:grid-cols-4">
                 <div class="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03]">
                     <p class="text-sm text-gray-500 dark:text-gray-400">
                         Criadas no mês atual
