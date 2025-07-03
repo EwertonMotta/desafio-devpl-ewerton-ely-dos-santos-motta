@@ -33,7 +33,8 @@ class ToDoController extends Controller
             ->when($endCreatedAt, fn (Builder $query) => $query->where('created_at', '<=', $endCreatedAt))
             ->when($startDeadline, fn (Builder $query) => $query->where('deadline', '>=', $startDeadline . ' 00:00:00'))
             ->when($endDeadline, fn (Builder $query) => $query->where('deadline', '<=', $endDeadline . ' 23:59:59'))->orderBy($orderBy, $orderDirection)
-            ->paginate(10);
+            ->paginate(10)
+            ->withQueryString();
 
         return view('to-do.index', ['tasks' => $tasks, 'pendingTasksCount' => $pendingTasksCount, 'tasksCount' => $tasksCount]);
     }
