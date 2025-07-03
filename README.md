@@ -63,5 +63,4 @@ O projeto se encontra com **100% de cobertura de testes** (unitários e de featu
 - Banco de dados SQLite para facilitar testes e execução local, podendo ser facilmente trocado por outros drivers.
 - Cobertura de 100% de tipos e testes, validada via CI.
 - Uso de Alpine.js para interatividade leve e reativa no frontend, facilitando modais e interações sem dependências pesadas.
-
----
+- Componentização extensiva do frontend com Blade Components, promovendo reutilização, organização e fácil manutenção das views.
