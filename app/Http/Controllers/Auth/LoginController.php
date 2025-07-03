@@ -4,18 +4,20 @@ declare(strict_types = 1);
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Contracts\View\View;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\RedirectResponse;
 
 class LoginController extends Controller
 {
-    public function index()
+    public function index(): View
     {
         return view('auth.login');
     }
 
-    public function login(Request $request)
+    public function login(Request $request): RedirectResponse
     {
         $request->validate(
             [
@@ -41,9 +43,9 @@ class LoginController extends Controller
         ]);
     }
 
-    public function logout(Request $request)
+    public function logout(): RedirectResponse
     {
-        auth()->logout();
+        Auth::logout();
 
         return redirect('/');
     }

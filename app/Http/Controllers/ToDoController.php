@@ -4,13 +4,16 @@ declare(strict_types = 1);
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\TaskRequest;
 use App\Models\Task;
 use Illuminate\Http\Request;
+use App\Http\Requests\TaskRequest;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Database\Eloquent\Builder;
 
 class ToDoController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request) : View
     {
         $myTasks           = auth()->user()->tasks()->get();
         $tasksCount        = $myTasks->count();
@@ -25,17 +28,17 @@ class ToDoController extends Controller
 
         $tasks = Task::query()
             ->where('user_id', auth()->id())
-            ->when($title, fn ($query) => $query->where('title', 'like', '%' . $title . '%'))
-            ->when($startCreatedAt, fn ($query) => $query->where('created_at', '>=', $startCreatedAt))
-            ->when($endCreatedAt, fn ($query) => $query->where('created_at', '<=', $endCreatedAt))
-            ->when($startDeadline, fn ($query) => $query->where('deadline', '>=', $startDeadline . ' 00:00:00'))
-            ->when($endDeadline, fn ($query) => $query->where('deadline', '<=', $endDeadline . ' 23:59:59'))->orderBy($orderBy, $orderDirection)
+            ->when($title, fn (Builder $query) => $query->where('title', 'like', '%' . $title . '%'))
+            ->when($startCreatedAt, fn (Builder $query) => $query->where('created_at', '>=', $startCreatedAt))
+            ->when($endCreatedAt, fn (Builder $query) => $query->where('created_at', '<=', $endCreatedAt))
+            ->when($startDeadline, fn (Builder $query) => $query->where('deadline', '>=', $startDeadline . ' 00:00:00'))
+            ->when($endDeadline, fn (Builder $query) => $query->where('deadline', '<=', $endDeadline . ' 23:59:59'))->orderBy($orderBy, $orderDirection)
             ->paginate(10);
 
         return view('to-do.index', ['tasks' => $tasks, 'pendingTasksCount' => $pendingTasksCount, 'tasksCount' => $tasksCount]);
     }
 
-    public function toggle(Request $request, Task $task)
+    public function toggle(Request $request, Task $task): RedirectResponse
     {
         if (auth()->user()->cannot('update', $task)) {
             return redirect()->route('to-do.index')
@@ -57,7 +60,7 @@ class ToDoController extends Controller
 
         if ($requestQuery) {
             $queryParams = explode('&', (string) $requestQuery);
-            $queryParams = array_reduce($queryParams, function (array $carry, $item) {
+            $queryParams = array_reduce($queryParams, function (array $carry, string $item) {
                 [$key, $value]          = explode('=', $item);
                 $carry[urldecode($key)] = urldecode($value);
 
@@ -68,12 +71,12 @@ class ToDoController extends Controller
         return redirect()->route('to-do.index', $queryParams);
     }
 
-    public function create()
+    public function create(): View
     {
         return view('to-do.create');
     }
 
-    public function store(TaskRequest $request)
+    public function store(TaskRequest $request): RedirectResponse
     {
         $validated = $request->validated();
 
@@ -87,7 +90,7 @@ class ToDoController extends Controller
         return redirect()->route('to-do.index');
     }
 
-    public function show(Task $task)
+    public function show(Task $task): View
     {
         if (auth()->user()->cannot('view', $task)) {
             return redirect()->route('to-do.index')
@@ -97,7 +100,7 @@ class ToDoController extends Controller
         return view('to-do.show', ['task' => $task]);
     }
 
-    public function edit(Task $task)
+    public function edit(Task $task): View
     {
         if (auth()->user()->cannot('update', $task)) {
             return redirect()->route('to-do.index')
@@ -107,7 +110,7 @@ class ToDoController extends Controller
         return view('to-do.edit', ['task' => $task]);
     }
 
-    public function update(TaskRequest $request, Task $task)
+    public function update(TaskRequest $request, Task $task): RedirectResponse
     {
         if (auth()->user()->cannot('update', $task)) {
             return redirect()->route('to-do.index')
@@ -131,7 +134,7 @@ class ToDoController extends Controller
         return redirect()->route('to-do.index');
     }
 
-    public function destroy(Task $task)
+    public function destroy(Task $task): RedirectResponse
     {
         if (auth()->user()->cannot('delete', $task)) {
             return redirect()->route('to-do.index')
