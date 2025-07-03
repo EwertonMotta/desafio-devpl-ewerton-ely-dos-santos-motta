@@ -7,38 +7,9 @@
                 @csrf
                 @method('POST')
                 <h5 class="text-xl font-medium text-gray-900 dark:text-white">Faça login na sua conta</h5>
-                <div>
-                    <label for="email" class="mb-2 block text-sm font-medium text-gray-900 dark:text-white">
-                        Seu email
-                    </label>
-                    <input type="email" name="email" id="email"
-                        class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-500 dark:bg-gray-600 dark:text-white dark:placeholder-gray-400"
-                        placeholder="name@company.com" />
-                    @error('email')
-                        <p class="mt-2 text-sm text-red-600 dark:text-red-500">
-                            <span class="font-medium">Ops!</span>
-                            {{ $message }}
-                        </p>
-                    @enderror
-                </div>
-                <div>
-                    <label for="password" class="mb-2 block text-sm font-medium text-gray-900 dark:text-white">
-                        Sua senha
-                    </label>
-                    <input type="password" name="password" id="password" placeholder="••••••••"
-                        class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-500 dark:bg-gray-600 dark:text-white dark:placeholder-gray-400" />
-
-                    @error('password')
-                        <p class="mt-2 text-sm text-red-600 dark:text-red-500">
-                            <span class="font-medium">Ops!</span>
-                            {{ $message }}
-                        </p>
-                    @enderror
-                </div>
-                <button type="submit"
-                    class="w-full rounded-lg bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                    Login na sua conta
-                </button>
+                <x-forms.input name="email" type="email" label="Seu e-mail" placeholder="name@company.com" />
+                <x-forms.input name="password" type="password" label="Senha" placeholder="••••••••" />
+                <x-solid.primary-button type="submit" class="w-full">Logar na sua conta</x-solid.primary-button>
                 <div class="text-sm font-medium text-gray-500 dark:text-gray-300">
                     Não tem uma conta? <a href="{{ route('register') }}"
                         class="text-blue-700 hover:underline dark:text-blue-500">
@@ -47,6 +18,5 @@
                 </div>
             </form>
         </div>
-
     </div>
 </x-layouts.guest>
