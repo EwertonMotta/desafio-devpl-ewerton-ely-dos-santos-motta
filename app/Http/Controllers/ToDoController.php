@@ -4,16 +4,16 @@ declare(strict_types = 1);
 
 namespace App\Http\Controllers;
 
-use App\Models\Task;
-use Illuminate\Http\Request;
 use App\Http\Requests\TaskRequest;
+use App\Models\Task;
 use Illuminate\Contracts\View\View;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 
 class ToDoController extends Controller
 {
-    public function index(Request $request) : View
+    public function index(Request $request): View
     {
         $myTasks           = auth()->user()->tasks()->get();
         $tasksCount        = $myTasks->count();
@@ -90,7 +90,7 @@ class ToDoController extends Controller
         return redirect()->route('to-do.index');
     }
 
-    public function show(Task $task): View|RedirectResponse
+    public function show(Task $task): View | RedirectResponse
     {
         if (auth()->user()->cannot('view', $task)) {
             return redirect()->route('to-do.index')
@@ -100,7 +100,7 @@ class ToDoController extends Controller
         return view('to-do.show', ['task' => $task]);
     }
 
-    public function edit(Task $task): View|RedirectResponse
+    public function edit(Task $task): View | RedirectResponse
     {
         if (auth()->user()->cannot('update', $task)) {
             return redirect()->route('to-do.index')
